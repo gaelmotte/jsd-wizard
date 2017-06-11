@@ -40,6 +40,9 @@
           //show the field
           field.style.display = 'block';
         }
+      }else{
+        //show the field
+        field.style.display = 'block';
       }
     });
 
