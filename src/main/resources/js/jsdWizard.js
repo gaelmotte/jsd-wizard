@@ -1,6 +1,8 @@
 (function(){
 
   var initTimerId;
+  var displayedStep;
+  var lastLocation;
 
   var fieldsLoaded = function(){
     var buttonContainer = document.querySelector("div.buttons-container");
@@ -38,6 +40,9 @@
           //show the field
           field.style.display = 'block';
         }
+      }else{
+        //show the field
+        field.style.display = 'block';
       }
     });
 
@@ -54,6 +59,7 @@
     wizardSteps.forEach(function(step,index,steps){
 
       var stepDiv = document.createElement("div");
+      stepDiv.classList.add("wizard-step");
       var stepTitle = document.createElement("h3");
 
       stepTitle.textContent = "Etape " + (index +1) + " / " + steps.length + " : " +step.name;
@@ -76,6 +82,12 @@
         stepPrevious.classList.add("aui-button", "aui-button-link");
         stepPrevious.textContent = "Précédent";
 
+        stepPrevious.addEventListener("click",function(e){
+          displayedStep--;
+          displayCurrentStep();
+          e.preventDefault();
+        });
+
         nativeButtons.insertBefore(stepPrevious,nativeButtons.querySelector("div"));
 
 
@@ -84,14 +96,27 @@
       }else{
 
         var stepNext = document.createElement("button");
-        stepNext.classList.add("aui-button", "aui-button-primary");
+        stepNext.classList.add("aui-button");
         stepNext.textContent = "Suivant";
+
+        stepNext.addEventListener("click",function(e){
+          displayedStep++;
+          displayCurrentStep();
+          e.preventDefault();
+        });
+
         stepButtons.appendChild(stepNext);
 
         if(index != 0){
           var stepPrevious = document.createElement("button");
           stepPrevious.classList.add("aui-button", "aui-button-link");
           stepPrevious.textContent = "Précédent";
+
+          stepPrevious.addEventListener("click",function(e){
+            displayedStep--;
+            displayCurrentStep();
+            e.preventDefault();
+          });
           stepButtons.appendChild(stepPrevious);
         }
 
@@ -99,25 +124,47 @@
 
       }
       
-
-
-
     });
-
-
   }
+
+  var displayCurrentStep = function(){
+    var stepsDivs = document.querySelectorAll(".wizard-step");
+    if(stepsDivs.length > 0){
+      Array.prototype.forEach.call(stepsDivs, function(elem){elem.style.display = 'none';});
+      stepsDivs[displayedStep].style.display='block';
+      //TODO consider scrolling to the title of that step
+    }
+  }
+
 
   var initView = function(){
     if(fieldsLoaded()){
       console.log("trying to setup display");
       window.clearInterval(initTimerId);
       reLayoutFields(sortFieldsInSteps());
+      displayedStep = 0;
+      displayCurrentStep();
     }
   }
 
 
-  window.addEventListener("load",function(){
+  /*window.addEventListener("load",function(){
     console.log("jsd-wizard plugin fired up !");
     initTimerId = window.setInterval(initView, 100);
-  });
+  });*/
+
+
+  var fireUp = function(){
+    if(!lastLocation || lastLocation != window.location.href){
+      lastLocation = window.location.href;
+      console.log(lastLocation);
+      if(lastLocation.indexOf("create") != -1){
+        console.log("jsd-wizard plugin fired up !");
+        initTimerId = window.setInterval(initView, 100);
+      }
+    }
+  }
+
+  setInterval(fireUp,100);
+
 })();
