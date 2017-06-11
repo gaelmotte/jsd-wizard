@@ -56,7 +56,7 @@
       var stepDiv = document.createElement("div");
       var stepTitle = document.createElement("h3");
 
-      stepTitle.textContent = step.name;
+      stepTitle.textContent = "Etape " + (index +1) + " / " + steps.length + " : " +step.name;
       stepDiv.appendChild(stepTitle);
       requestForm.appendChild(stepDiv);
       step.fields.forEach(function(field){
