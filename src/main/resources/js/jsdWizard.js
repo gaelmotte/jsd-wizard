@@ -2,6 +2,7 @@
 
   var initTimerId;
   var displayedStep;
+  var lastLocation;
 
   var fieldsLoaded = function(){
     var buttonContainer = document.querySelector("div.buttons-container");
@@ -144,8 +145,23 @@
   }
 
 
-  window.addEventListener("load",function(){
+  /*window.addEventListener("load",function(){
     console.log("jsd-wizard plugin fired up !");
     initTimerId = window.setInterval(initView, 100);
-  });
+  });*/
+
+
+  var fireUp = function(){
+    if(!lastLocation || lastLocation != window.location.href){
+      lastLocation = window.location.href;
+      console.log(lastLocation);
+      if(lastLocation.indexOf("create") != -1){
+        console.log("jsd-wizard plugin fired up !");
+        initTimerId = window.setInterval(initView, 100);
+      }
+    }
+  }
+
+  setInterval(fireUp,100);
+
 })();
