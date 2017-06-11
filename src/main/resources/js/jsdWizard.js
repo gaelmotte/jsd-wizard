@@ -1,6 +1,7 @@
 (function(){
 
   var initTimerId;
+  var displayedStep;
 
   var fieldsLoaded = function(){
     var buttonContainer = document.querySelector("div.buttons-container");
@@ -77,6 +78,12 @@
         stepPrevious.classList.add("aui-button", "aui-button-link");
         stepPrevious.textContent = "Précédent";
 
+        stepPrevious.addEventListener("click",function(e){
+          displayedStep--;
+          displayCurrentStep();
+          e.preventDefault();
+        });
+
         nativeButtons.insertBefore(stepPrevious,nativeButtons.querySelector("div"));
 
 
@@ -85,14 +92,27 @@
       }else{
 
         var stepNext = document.createElement("button");
-        stepNext.classList.add("aui-button", "aui-button-primary");
+        stepNext.classList.add("aui-button");
         stepNext.textContent = "Suivant";
+
+        stepNext.addEventListener("click",function(e){
+          displayedStep++;
+          displayCurrentStep();
+          e.preventDefault();
+        });
+
         stepButtons.appendChild(stepNext);
 
         if(index != 0){
           var stepPrevious = document.createElement("button");
           stepPrevious.classList.add("aui-button", "aui-button-link");
           stepPrevious.textContent = "Précédent";
+
+          stepPrevious.addEventListener("click",function(e){
+            displayedStep--;
+            displayCurrentStep();
+            e.preventDefault();
+          });
           stepButtons.appendChild(stepPrevious);
         }
 
@@ -100,21 +120,26 @@
 
       }
       
-      if(index == 0){
-        stepDiv.style.display = 'block';
-      }
-
-
     });
-
-
   }
+
+  var displayCurrentStep = function(){
+    var stepsDivs = document.querySelectorAll(".wizard-step");
+    Array.prototype.forEach.call(stepsDivs, function(elem){elem.style.display = 'none';});
+    console.log(stepsDivs);
+    console.log(displayedStep);
+    stepsDivs[displayedStep].style.display='block';
+    //TODO consider scrolling to the title of that step
+  }
+
 
   var initView = function(){
     if(fieldsLoaded()){
       console.log("trying to setup display");
       window.clearInterval(initTimerId);
       reLayoutFields(sortFieldsInSteps());
+      displayedStep = 0;
+      displayCurrentStep();
     }
   }
 
