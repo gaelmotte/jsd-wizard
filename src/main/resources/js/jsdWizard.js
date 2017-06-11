@@ -28,7 +28,7 @@
           descriptionParagraph.textContent = descriptionParagraph.textContent.replace(/@@(.*)@@/i, "");
 
           //test if wizard step is not know yet
-          var step = wizardSteps.find(function(step){ return step.name == matches[1];});
+          var step = wizardSteps.filter(function(step){ return step.name == matches[1];})[0];
           if(!step){
             step = {"name" : matches[1], "fields" : []};
             wizardSteps.push(step);
@@ -79,7 +79,8 @@
       if(index == steps.length -1){
 
         var stepPrevious = document.createElement("button");
-        stepPrevious.classList.add("aui-button", "aui-button-link");
+        stepPrevious.classList.add("aui-button");
+        stepPrevious.classList.add("aui-button-link");
         stepPrevious.textContent = "Précédent";
 
         stepPrevious.addEventListener("click",function(e){
@@ -109,7 +110,8 @@
 
         if(index != 0){
           var stepPrevious = document.createElement("button");
-          stepPrevious.classList.add("aui-button", "aui-button-link");
+          stepPrevious.classList.add("aui-button");
+          stepPrevious.classList.add("aui-button-link");
           stepPrevious.textContent = "Précédent";
 
           stepPrevious.addEventListener("click",function(e){
