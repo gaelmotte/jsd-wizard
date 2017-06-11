@@ -69,17 +69,33 @@
 
       console.log("processing step index : " + index);
 
-      if(index != steps.length -1){
-        var stepNext = document.createElement("button");
-        stepNext.classList.add("aui-button", "aui-button-primary");
-        stepNext.textContent = "Suivant";
 
-        stepButtons.appendChild(stepNext);
-        stepDiv.appendChild(stepButtons)
+      if(index == steps.length -1){
+
+        var stepPrevious = document.createElement("button");
+        stepPrevious.classList.add("aui-button", "aui-button-link");
+        stepPrevious.textContent = "Précédent";
+
+        nativeButtons.insertBefore(stepPrevious,nativeButtons.querySelector("div"));
+
+
+        stepDiv.appendChild(nativeButtons);
 
       }else{
 
-        stepDiv.appendChild(nativeButtons);
+        var stepNext = document.createElement("button");
+        stepNext.classList.add("aui-button", "aui-button-primary");
+        stepNext.textContent = "Suivant";
+        stepButtons.appendChild(stepNext);
+
+        if(index != 0){
+          var stepPrevious = document.createElement("button");
+          stepPrevious.classList.add("aui-button", "aui-button-link");
+          stepPrevious.textContent = "Précédent";
+          stepButtons.appendChild(stepPrevious);
+        }
+
+        stepDiv.appendChild(stepButtons);
 
       }
       
