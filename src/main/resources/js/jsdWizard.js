@@ -28,7 +28,7 @@
           descriptionParagraph.textContent = descriptionParagraph.textContent.replace(/@@(.*)@@/i, "");
 
           //test if wizard step is not know yet
-          var step = wizardSteps.find(function(step){ return step.name == matches[1];});
+          var step = wizardSteps.filter(function(step){ return step.name == matches[1];})[0];
           if(!step){
             step = {"name" : matches[1], "fields" : []};
             wizardSteps.push(step);
