@@ -54,6 +54,7 @@
     wizardSteps.forEach(function(step,index,steps){
 
       var stepDiv = document.createElement("div");
+      stepDiv.classList.add("wizard-step");
       var stepTitle = document.createElement("h3");
 
       stepTitle.textContent = "Etape " + (index +1) + " / " + steps.length + " : " +step.name;
@@ -99,7 +100,9 @@
 
       }
       
-
+      if(index == 0){
+        stepDiv.style.display = 'block';
+      }
 
 
     });

@@ -5,3 +5,7 @@ div.field-group{
 div.field-group.field-separator{
   display:block;
 }
+
+div.wizard-step{
+  display:none;
+}
