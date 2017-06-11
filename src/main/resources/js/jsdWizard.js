@@ -79,7 +79,8 @@
       if(index == steps.length -1){
 
         var stepPrevious = document.createElement("button");
-        stepPrevious.classList.add("aui-button", "aui-button-link");
+        stepPrevious.classList.add("aui-button");
+        stepPrevious.classList.add("aui-button-link");
         stepPrevious.textContent = "Précédent";
 
         stepPrevious.addEventListener("click",function(e){
@@ -109,7 +110,8 @@
 
         if(index != 0){
           var stepPrevious = document.createElement("button");
-          stepPrevious.classList.add("aui-button", "aui-button-link");
+          stepPrevious.classList.add("aui-button");
+          stepPrevious.classList.add("aui-button-link");
           stepPrevious.textContent = "Précédent";
 
           stepPrevious.addEventListener("click",function(e){
