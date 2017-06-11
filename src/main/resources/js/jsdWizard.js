@@ -126,11 +126,11 @@
 
   var displayCurrentStep = function(){
     var stepsDivs = document.querySelectorAll(".wizard-step");
-    Array.prototype.forEach.call(stepsDivs, function(elem){elem.style.display = 'none';});
-    console.log(stepsDivs);
-    console.log(displayedStep);
-    stepsDivs[displayedStep].style.display='block';
-    //TODO consider scrolling to the title of that step
+    if(stepsDivs.length > 0){
+      Array.prototype.forEach.call(stepsDivs, function(elem){elem.style.display = 'none';});
+      stepsDivs[displayedStep].style.display='block';
+      //TODO consider scrolling to the title of that step
+    }
   }
 
 
