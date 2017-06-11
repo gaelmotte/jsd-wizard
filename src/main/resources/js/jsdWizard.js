@@ -2,6 +2,7 @@
 
   var initTimerId;
   var displayedStep;
+  var lastLocation;
 
   var fieldsLoaded = function(){
     var buttonContainer = document.querySelector("div.buttons-container");
@@ -39,6 +40,9 @@
           //show the field
           field.style.display = 'block';
         }
+      }else{
+        //show the field
+        field.style.display = 'block';
       }
     });
 
@@ -125,11 +129,11 @@
 
   var displayCurrentStep = function(){
     var stepsDivs = document.querySelectorAll(".wizard-step");
-    Array.prototype.forEach.call(stepsDivs, function(elem){elem.style.display = 'none';});
-    console.log(stepsDivs);
-    console.log(displayedStep);
-    stepsDivs[displayedStep].style.display='block';
-    //TODO consider scrolling to the title of that step
+    if(stepsDivs.length > 0){
+      Array.prototype.forEach.call(stepsDivs, function(elem){elem.style.display = 'none';});
+      stepsDivs[displayedStep].style.display='block';
+      //TODO consider scrolling to the title of that step
+    }
   }
 
 
@@ -144,8 +148,23 @@
   }
 
 
-  window.addEventListener("load",function(){
+  /*window.addEventListener("load",function(){
     console.log("jsd-wizard plugin fired up !");
     initTimerId = window.setInterval(initView, 100);
-  });
+  });*/
+
+
+  var fireUp = function(){
+    if(!lastLocation || lastLocation != window.location.href){
+      lastLocation = window.location.href;
+      console.log(lastLocation);
+      if(lastLocation.indexOf("create") != -1){
+        console.log("jsd-wizard plugin fired up !");
+        initTimerId = window.setInterval(initView, 100);
+      }
+    }
+  }
+
+  setInterval(fireUp,100);
+
 })();
