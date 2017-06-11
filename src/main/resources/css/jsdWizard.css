@@ -1,0 +1,7 @@
+div.field-group{
+  display:none;
+}
+
+div.field-group.field-separator{
+  display:block;
+}
