@@ -1,8 +1,8 @@
-div.field-group{
+.vp-request-form div.field-group{
   display:none;
 }
 
-div.field-group.field-separator{
+.vp-request-form div.field-group.field-separator{
   display:block;
 }
 
