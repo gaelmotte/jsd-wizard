@@ -12,6 +12,9 @@
   <resource type="i18n" name="i18n" location="jsdWizard"/>
   <!-- add our web resources -->
   <web-resource key="jsdWizard-resources" name="jsdWizard Web Resources">
+    <transformation extension="js">
+        <transformer key="jsI18n"/>
+    </transformation>
     <resource type="download" name="jsdWizard.css" location="/css/jsdWizard.css"/>
     <resource type="download" name="jsdWizard.js" location="/js/jsdWizard.js"/>
     <resource type="download" name="images/" location="/images"/>

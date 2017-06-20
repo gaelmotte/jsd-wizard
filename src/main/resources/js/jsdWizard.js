@@ -62,7 +62,7 @@
       stepDiv.classList.add("wizard-step");
       var stepTitle = document.createElement("h3");
 
-      stepTitle.textContent = "Etape " + (index +1) + " / " + steps.length + " : " +step.name;
+      stepTitle.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.titlelabel") + (index +1) + " / " + steps.length + " : " +step.name;
       stepDiv.appendChild(stepTitle);
       requestForm.appendChild(stepDiv);
       step.fields.forEach(function(field){
@@ -81,7 +81,7 @@
         var stepPrevious = document.createElement("button");
         stepPrevious.classList.add("aui-button");
         stepPrevious.classList.add("aui-button-link");
-        stepPrevious.textContent = "Précédent";
+        stepPrevious.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.previous");
 
         stepPrevious.addEventListener("click",function(e){
           displayedStep--;
@@ -98,7 +98,7 @@
 
         var stepNext = document.createElement("button");
         stepNext.classList.add("aui-button");
-        stepNext.textContent = "Suivant";
+        stepNext.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.next");
 
         stepNext.addEventListener("click",function(e){
           displayedStep++;
@@ -112,7 +112,7 @@
           var stepPrevious = document.createElement("button");
           stepPrevious.classList.add("aui-button");
           stepPrevious.classList.add("aui-button-link");
-          stepPrevious.textContent = "Précédent";
+          stepPrevious.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.previous");
 
           stepPrevious.addEventListener("click",function(e){
             displayedStep--;
@@ -168,5 +168,6 @@
   }
 
   setInterval(fireUp,100);
+
 
 })();
