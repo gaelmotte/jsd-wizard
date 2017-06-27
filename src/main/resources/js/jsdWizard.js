@@ -1,6 +1,9 @@
 (function(){
 
-  var initTimerId;
+  var timers={
+    initTimerId: null,
+    errorsLookupTimerId : null
+  }
   var displayedStep;
   var lastLocation;
 
@@ -56,13 +59,15 @@
     var requestForm = document.querySelector("form");
     var nativeButtons = document.querySelector("form div.buttons");
 
+
+
     wizardSteps.forEach(function(step,index,steps){
 
       var stepDiv = document.createElement("div");
       stepDiv.classList.add("wizard-step");
       var stepTitle = document.createElement("h3");
 
-      stepTitle.textContent = "Etape " + (index +1) + " / " + steps.length + " : " +step.name;
+      stepTitle.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.titlelabel") + (index +1) + " / " + steps.length + " : " +step.name;
       stepDiv.appendChild(stepTitle);
       requestForm.appendChild(stepDiv);
       step.fields.forEach(function(field){
@@ -81,7 +86,7 @@
         var stepPrevious = document.createElement("button");
         stepPrevious.classList.add("aui-button");
         stepPrevious.classList.add("aui-button-link");
-        stepPrevious.textContent = "Précédent";
+        stepPrevious.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.previous");
 
         stepPrevious.addEventListener("click",function(e){
           displayedStep--;
@@ -98,7 +103,7 @@
 
         var stepNext = document.createElement("button");
         stepNext.classList.add("aui-button");
-        stepNext.textContent = "Suivant";
+        stepNext.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.next");
 
         stepNext.addEventListener("click",function(e){
           displayedStep++;
@@ -112,7 +117,7 @@
           var stepPrevious = document.createElement("button");
           stepPrevious.classList.add("aui-button");
           stepPrevious.classList.add("aui-button-link");
-          stepPrevious.textContent = "Précédent";
+          stepPrevious.textContent = AJS.I18n.getText("com.lab333.jsdwizard.step.previous");
 
           stepPrevious.addEventListener("click",function(e){
             displayedStep--;
@@ -138,22 +143,37 @@
     }
   }
 
+  var foundError = false;
 
-  var initView = function(){
-    if(fieldsLoaded()){
-      console.log("trying to setup display");
-      window.clearInterval(initTimerId);
-      reLayoutFields(sortFieldsInSteps());
-      displayedStep = 0;
-      displayCurrentStep();
+  var lookupErrors = function(){
+    if(!foundError){
+      stepsDivs = document.querySelectorAll(".wizard-step");
+      for(var i = 0; i < stepsDivs.length; i++ ){
+        var error = stepsDivs[i].querySelector("div.error");
+        if(error){
+          foundError = true;
+          displayedStep = i;
+          displayCurrentStep();
+          return;
+        }
+      }
     }
   }
 
 
-  /*window.addEventListener("load",function(){
-    console.log("jsd-wizard plugin fired up !");
-    initTimerId = window.setInterval(initView, 100);
-  });*/
+  var initView = function(){
+    if(fieldsLoaded()){
+      console.log("trying to setup display");
+      window.clearInterval(timers.initTimerId);
+      reLayoutFields(sortFieldsInSteps());
+      displayedStep = 0;
+      displayCurrentStep();
+
+      document.querySelector("input[type=submit]").addEventListener("click", function(){foundError = false;});
+      timers.errorsLookupTimerId = window.setInterval(lookupErrors,100);
+    }
+  }
+
 
 
   var fireUp = function(){
@@ -162,11 +182,15 @@
       console.log(lastLocation);
       if(lastLocation.indexOf("create") != -1){
         console.log("jsd-wizard plugin fired up !");
-        initTimerId = window.setInterval(initView, 100);
+        timers.initTimerId = window.setInterval(initView, 100);
+
+      }else{ //teardown
+        timers.forEach(function(timer){window.clearInterval(timer);});
       }
     }
   }
 
   setInterval(fireUp,100);
+
 
 })();
