@@ -17,10 +17,8 @@
 
   var sortFieldsInSteps = function(){
     var fields = document.querySelectorAll(".field-group");
-    console.log("fields", fields);
     var wizardSteps = [];
     Array.prototype.forEach.call(fields, function(field){
-      console.log(field);
       var descriptionParagraph = field.querySelector(".description p");
       if(descriptionParagraph){
         //test to see if there is the specific tag in field description
@@ -48,13 +46,9 @@
 
   var reLayoutFields = function(wizardSteps){
 
-    console.log(wizardSteps);
-
     var requestForm = document.querySelector("form");
     var nativeButtons = document.querySelector("form div.buttons");
 
-
-    console.log("wizardSteps", wizardSteps);
 
     wizardSteps.forEach(function(step,index,steps){
 
@@ -71,8 +65,6 @@
 
       var stepButtons = document.createElement("div");
       stepButtons.classList.add("buttons");
-
-      console.log("processing step index : " + index);
 
 
       if(index == steps.length -1){
@@ -161,7 +153,6 @@
 
   var initView = function(){
     if(fieldsLoaded()){
-      console.log("trying to setup display");
       window.clearInterval(timers.initTimerId);
       reLayoutFields(sortFieldsInSteps());
       revealForm();
@@ -179,7 +170,6 @@
     var form = document.querySelector(".vp-request-form");
     if(form && form != theForm){
       theForm = form;
-      console.log("jsd-wizard plugin fired up !");
       timers.initTimerId = window.setInterval(initView, 100);
     }
   }
