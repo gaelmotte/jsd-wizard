@@ -1,3 +1,5 @@
+var _paq = _paq | [];
+
 (function(){
 
   var timers={
@@ -5,6 +7,8 @@
     errorsLookupTimerId : null
   }
   var theForm = null;
+  var requestType = null;
+  var stepReached = -1;
 
   var fieldsLoaded = function(){
     var buttonContainer = document.querySelector("div.buttons-container");
@@ -15,12 +19,15 @@
     }
   }
 
+  var identifyRequestType = function(){
+    var requestTypeTitle = document.querySelector(".cv-page-title-text");
+    requestType = requestTypeTitle.textContent;
+  }
+
   var sortFieldsInSteps = function(){
     var fields = document.querySelectorAll(".field-group");
-    console.log("fields", fields);
     var wizardSteps = [];
     Array.prototype.forEach.call(fields, function(field){
-      console.log(field);
       var descriptionParagraph = field.querySelector(".description p");
       if(descriptionParagraph){
         //test to see if there is the specific tag in field description
@@ -28,7 +35,7 @@
         if(matches){
           console.log("found Wizard Step Title : " + matches[1]);
           //remove the tag from description
-          descriptionParagraph.textContent = descriptionParagraph.textContent.replace(/@@(.*)@@/i, "");
+          descriptionParagraph.innerHTML = descriptionParagraph.innerHTML.replace(/@@(.*)@@/i, "");
 
           //test if wizard step is not know yet
           var step = wizardSteps.filter(function(step){ return step.name == matches[1];})[0];
@@ -48,13 +55,9 @@
 
   var reLayoutFields = function(wizardSteps){
 
-    console.log(wizardSteps);
-
     var requestForm = document.querySelector("form");
     var nativeButtons = document.querySelector("form div.buttons");
 
-
-    console.log("wizardSteps", wizardSteps);
 
     wizardSteps.forEach(function(step,index,steps){
 
@@ -71,8 +74,6 @@
 
       var stepButtons = document.createElement("div");
       stepButtons.classList.add("buttons");
-
-      console.log("processing step index : " + index);
 
 
       if(index == steps.length -1){
@@ -135,6 +136,13 @@
       stepsDivs[displayedStep].style.display='block';
       //TODO consider scrolling to the title of that step
     }
+    if(displayedStep > stepReached){
+      stepReached = displayedStep;
+      if(_paq){ //piwik analytics global object
+        console.log("Reached step " +(1+stepReached) + "for requestType " + requestType);
+        _paq.push(['trackEvent', requestType, "reached step" , ""+(1+stepReached)])
+      }
+    }
   }
 
   var foundError = false;
@@ -147,6 +155,10 @@
         if(error){
           foundError = true;
           displayedStep = i;
+          if(_paq){ //piwik analytics global object
+            console.log("First Error in step " + (1+displayedStep) + " for requestType " + requestType);
+            _paq.push(['trackEvent', requestType, "error in step" , ""+(1+displayedStep)])
+          }
           displayCurrentStep();
           return;
         }
@@ -158,12 +170,22 @@
     document.querySelector(".vp-request-form").style.display = "block";
   }
 
+  var setUpSubmissionAnalyticsNotification = function(){
+    theForm.addEventListener("submit", function(){
+      if(_paq){ //piwik analytics global object
+        console.log("form submitted for requestType " + requestType);
+        _paq.push(['trackEvent', requestType, "submitted"])
+      }
+    });
+  }
+
 
   var initView = function(){
     if(fieldsLoaded()){
-      console.log("trying to setup display");
       window.clearInterval(timers.initTimerId);
+      identifyRequestType();
       reLayoutFields(sortFieldsInSteps());
+      setUpSubmissionAnalyticsNotification();
       revealForm();
       displayedStep = 0;
       displayCurrentStep();
@@ -179,7 +201,8 @@
     var form = document.querySelector(".vp-request-form");
     if(form && form != theForm){
       theForm = form;
-      console.log("jsd-wizard plugin fired up !");
+      stepReached = -1;
+
       timers.initTimerId = window.setInterval(initView, 100);
     }
   }
