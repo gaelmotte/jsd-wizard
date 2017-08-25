@@ -28,7 +28,7 @@
         if(matches){
           console.log("found Wizard Step Title : " + matches[1]);
           //remove the tag from description
-          descriptionParagraph.textContent = descriptionParagraph.textContent.replace(/@@(.*)@@/i, "");
+          descriptionParagraph.innerHTML = descriptionParagraph.innerHTML.replace(/@@(.*)@@/i, "");
 
           //test if wizard step is not know yet
           var step = wizardSteps.filter(function(step){ return step.name == matches[1];})[0];
