@@ -1,9 +1,5 @@
-.vp-request-form div.field-group{
+.vp-request-form{
   display:none;
-}
-
-.vp-request-form div.field-group.field-separator{
-  display:block;
 }
 
 div.wizard-step{

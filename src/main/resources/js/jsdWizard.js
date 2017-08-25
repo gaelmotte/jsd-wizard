@@ -4,8 +4,7 @@
     initTimerId: null,
     errorsLookupTimerId : null
   }
-  var displayedStep;
-  var lastLocation;
+  var theForm = null;
 
   var fieldsLoaded = function(){
     var buttonContainer = document.querySelector("div.buttons-container");
@@ -18,6 +17,7 @@
 
   var sortFieldsInSteps = function(){
     var fields = document.querySelectorAll(".field-group");
+    console.log("fields", fields);
     var wizardSteps = [];
     Array.prototype.forEach.call(fields, function(field){
       console.log(field);
@@ -39,13 +39,7 @@
 
           //append it to that step
           step.fields.push(field);
-        }else{
-          //show the field
-          field.style.display = 'block';
         }
-      }else{
-        //show the field
-        field.style.display = 'block';
       }
     });
 
@@ -60,6 +54,7 @@
     var nativeButtons = document.querySelector("form div.buttons");
 
 
+    console.log("wizardSteps", wizardSteps);
 
     wizardSteps.forEach(function(step,index,steps){
 
@@ -72,7 +67,6 @@
       requestForm.appendChild(stepDiv);
       step.fields.forEach(function(field){
         stepDiv.appendChild(field);
-        field.style.display = 'block';
       });
 
       var stepButtons = document.createElement("div");
@@ -160,12 +154,17 @@
     }
   }
 
+  var revealForm = function(){
+    document.querySelector(".vp-request-form").style.display = "block";
+  }
+
 
   var initView = function(){
     if(fieldsLoaded()){
       console.log("trying to setup display");
       window.clearInterval(timers.initTimerId);
       reLayoutFields(sortFieldsInSteps());
+      revealForm();
       displayedStep = 0;
       displayCurrentStep();
 
@@ -177,16 +176,11 @@
 
 
   var fireUp = function(){
-    if(!lastLocation || lastLocation != window.location.href){
-      lastLocation = window.location.href;
-      console.log(lastLocation);
-      if(lastLocation.indexOf("create") != -1){
-        console.log("jsd-wizard plugin fired up !");
-        timers.initTimerId = window.setInterval(initView, 100);
-
-      }else{ //teardown
-        timers.forEach(function(timer){window.clearInterval(timer);});
-      }
+    var form = document.querySelector(".vp-request-form");
+    if(form && form != theForm){
+      theForm = form;
+      console.log("jsd-wizard plugin fired up !");
+      timers.initTimerId = window.setInterval(initView, 100);
     }
   }
 
