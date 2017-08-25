@@ -140,7 +140,7 @@ var _paq = _paq | [];
       stepReached = displayedStep;
       if(_paq){ //piwik analytics global object
         console.log("Reached step " +(1+stepReached) + "for requestType " + requestType);
-        _paq.push(['trackEvent', requestType, "reached step" , ""+(1+stepReached)])
+        _paq.push(['trackEvent', requestType, "reached step" +(1+stepReached)])
       }
     }
   }
@@ -157,7 +157,7 @@ var _paq = _paq | [];
           displayedStep = i;
           if(_paq){ //piwik analytics global object
             console.log("First Error in step " + (1+displayedStep) + " for requestType " + requestType);
-            _paq.push(['trackEvent', requestType, "error in step" , ""+(1+displayedStep)])
+            _paq.push(['trackEvent', requestType, "error in step" +(1+displayedStep)])
           }
           displayCurrentStep();
           return;
